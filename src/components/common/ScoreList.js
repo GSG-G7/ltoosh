@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import { Text, View, StyleSheet, TextInput } from 'react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Fontisto';
-import { updatePlayerScoreAction } from '../../redux/actions';
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: { flex: 1, flexDirection: 'row' },
-  scoresContainer: { flex: 12 },
+  header: { flexDirection: 'row', height: 45 },
+  clickersContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: 50,
+  },
+  scoresContainer: { flex: 1 },
   playerName: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 14,
     backgroundColor: 'grey',
-    width: '100%',
   },
-  scoreList: { flex: 10, justifyContent: 'center', alignItems: 'center' },
   card: {
     flex: 1,
     justifyContent: 'center',
@@ -28,7 +30,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
   },
   oneRow: { flex: 1, flexDirection: 'row' },
-  // container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+  clicker: {
+    paddingLeft: 8,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  clickerText: { flex: 1, fontSize: 24 },
 });
 const Card = ({ text }) => (
   <View style={styles.card}>
@@ -38,21 +47,16 @@ const Card = ({ text }) => (
 const Clicker = ({ onSubmit }) => {
   const [count, setCount] = useState(0);
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-      }}>
+    <View style={styles.clicker}>
       <TextInput
-        style={{ flex: 1, fontSize: 20 }}
+        style={styles.clickerText}
         defaultValue="0"
         onChangeText={txt => setCount(+txt)}
         keyboardType="number-pad"
       />
       <View style={{ flex: 1 }}>
-        <Icon name="plus-a" size={16} onPress={() => onSubmit(+count)} />
-        <Icon name="minus-a" size={16} onPress={() => onSubmit(-count)} />
+        <Icon name="plus-a" size={20} onPress={() => onSubmit(+count)} />
+        <Icon name="minus-a" size={20} onPress={() => onSubmit(-count)} />
       </View>
     </View>
   );
@@ -60,7 +64,7 @@ const Clicker = ({ onSubmit }) => {
 const ScoreListHeader = ({ playerNames }) => (
   <View style={styles.header}>
     {playerNames.map(playerName => (
-      <View style={styles.playerName}>
+      <View key={`playerName:${playerName}`} style={styles.playerName}>
         <Text style={{ fontSize: styles.playerName.fontSize }}>{playerName}</Text>
       </View>
     ))}
@@ -70,7 +74,7 @@ const ScoreListHeader = ({ playerNames }) => (
 const ScoresScrollView = ({ scores }) => {
   const formatList = lists => {
     const max = lists.reduce((acum, arr) => Math.max(arr.length, acum), 0);
-    const formatted = new Array(max).fill([]).map(() => new Array(scores.length).fill(0));
+    const formatted = new Array(max).fill([]).map(() => new Array(scores.length).fill(''));
     lists.forEach((list, inner) =>
       list.forEach((e, outer) => {
         if (!formatted[outer]) formatted[outer] = [];
@@ -84,7 +88,7 @@ const ScoresScrollView = ({ scores }) => {
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.scoresContainer}>
           {formatList(scores).map((row, i) => (
-            <View style={styles.oneRow}>
+            <View style={styles.oneRow} key={`Row(${i + 1}`}>
               {row.map((
                 text,
                 j // [10, 2, 2, 2, 2]
@@ -98,43 +102,23 @@ const ScoresScrollView = ({ scores }) => {
     </View>
   );
 };
-const ScoreList = ({ playerNames, scores, updatePlayerScore }) => (
-  <View style={styles.container}>
+const ClickersList = ({ playerNames, updatePlayerScore }) => (
+  <View style={styles.clickersContainer}>
+    {playerNames.map(playerName => (
+      <Clicker
+        key={`clicker:${playerName}`}
+        onSubmit={ammount => updatePlayerScore({ name: playerName, scoreChange: ammount })}
+      />
+    ))}
+  </View>
+);
+
+const ScoreList = ({ style, editable, playerNames, scores, updatePlayerScore }) => (
+  <View style={{ ...styles.container, ...style }}>
     <ScoreListHeader playerNames={playerNames} />
+    {editable && <ClickersList playerNames={playerNames} updatePlayerScore={updatePlayerScore} />}
     <ScoresScrollView scores={scores} />
   </View>
 );
-const mapStateToProps = ({ scores: data }) => ({
-  playerNames: Object.keys(data),
-  scores: Object.values(data),
-});
 
-const mapDispatchToProps = { updatePlayerScore: updatePlayerScoreAction };
-
-export default connect(mapStateToProps, mapDispatchToProps)(ScoreList);
-
-/* {Object.entries(scores).map(([playerName, scoreArr]) => (
-      <OneList
-        key={playerName}
-        playerName={playerName}
-        scoreArr={scoreArr}
-        updatePlayerScore={ammount => updatePlayerScore({ name: playerName, scoreChange: ammount })}
-        />
-        ))} */
-// const OneList = ({ playerName, scoreArr, updatePlayerScore }) => (
-//   // oneList: { flex: 1, justifyContent: 'flex-start', alignItems: 'center' },
-//   <View style={styles.oneList}>
-//     <View style={styles.playerName}>
-//       <Text style={{ fontSize: styles.playerName.fontSize }}>{playerName}</Text>
-//     </View>
-//     <View style={styles.scoreList}>
-//       <FlatList
-//         keyboardShouldPersistTaps="always"
-//         data={scoreArr}
-//         renderItem={({ item }) => <Card text={item} />}
-//         keyExtractor={(e, i) => `${e}${i}`}
-//       />
-//     </View>
-//     <Clicker onSubmit={updatePlayerScore} />
-//   </View>
-// );
+export default ScoreList;

@@ -2,7 +2,16 @@ import { SAVE_GAME } from '../actions';
 
 const INITIAL_STATE = [
   {
-    date: Date.now(),
+    date: Date.now() + 100,
+    gameType: 'tarneeb',
+    Omar: [20],
+    Amoodaa: [10],
+    Liwaa: [2],
+    Salman: [2],
+    Mighty: [2],
+  },
+  {
+    date: Date.now() + 2,
     Omar: [20],
     Amoodaa: [10],
     Liwaa: [2],

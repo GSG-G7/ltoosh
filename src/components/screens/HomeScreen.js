@@ -15,25 +15,53 @@ const HomeScreen = ({
   updatePlayerScore,
   clearNames,
   saveGame,
-  playerNames,
-  scores,
+
   gameState,
 }) => {
   const [name, setName] = React.useState('');
+  const [gameType, setGameType] = React.useState('');
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flexDirection: 'row' }}>
-        <TextInput style={{ flex: 2 }} value={name} onChangeText={setName} />
-        <Button style={{ flex: 11 }} title="add player" onPress={() => addPlayer(name)} />
+        <TextInput style={{ flex: 1 }} value={name} onChangeText={setName} />
         <Button
-          style={{ flex: 11 }}
-          title="newGame"
+          title="Add Player"
+          onPress={() => {
+            addPlayer(name);
+            setName('');
+          }}
+        />
+        <Button
+          title={gameType || 'Game type'}
+          onPress={() =>
+            Alert.alert(
+              'What was this game?',
+              'sorry rn there are 3 options, dont worry, this is completely optional',
+              [
+                {
+                  text: 'Tarneeb',
+                  onPress: (value = 'Tarneeb') => setGameType(value),
+                },
+                {
+                  text: 'Trix',
+                  onPress: (value = 'Trix') => setGameType(value),
+                },
+                {
+                  text: 'Dooka',
+                  onPress: (value = 'Dooka') => setGameType(value),
+                },
+              ]
+            )
+          }
+        />
+        <Button
+          title="Save Game"
           onPress={() =>
             Alert.alert('', 'Do you want to clear the names?', [
               {
                 text: 'Yes',
                 onPress: () => {
-                  saveGame(gameState);
+                  saveGame({ gameType, ...gameState });
                   clearNames();
                 },
               },
@@ -42,19 +70,12 @@ const HomeScreen = ({
           }
         />
       </View>
-      <ScoreList
-        editable
-        playerNames={playerNames}
-        scores={scores}
-        updatePlayerScore={updatePlayerScore}
-      />
+      <ScoreList editable gameState={gameState} updatePlayerScore={updatePlayerScore} />
     </View>
   );
 };
 
 const mapStateToProps = ({ scores: gameState }) => ({
-  playerNames: Object.keys(gameState),
-  scores: Object.values(gameState),
   gameState,
 });
 

@@ -113,12 +113,21 @@ const ClickersList = ({ playerNames, updatePlayerScore }) => (
   </View>
 );
 
-const ScoreList = ({ style, editable, playerNames, scores, updatePlayerScore }) => (
-  <View style={{ ...styles.container, ...style }}>
-    <ScoreListHeader playerNames={playerNames} />
-    {editable && <ClickersList playerNames={playerNames} updatePlayerScore={updatePlayerScore} />}
-    <ScoresScrollView scores={scores} />
-  </View>
-);
+const ScoreList = ({
+  style,
+  editable,
+  gameState: { date, gameType, ...gameState },
+  updatePlayerScore,
+}) => {
+  const playerNames = Object.keys(gameState);
+  const scores = Object.values(gameState);
+  return (
+    <View style={{ ...styles.container, ...style }}>
+      <ScoreListHeader playerNames={playerNames} />
+      {editable && <ClickersList playerNames={playerNames} updatePlayerScore={updatePlayerScore} />}
+      <ScoresScrollView scores={scores} />
+    </View>
+  );
+};
 
 export default ScoreList;

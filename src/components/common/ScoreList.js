@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
   },
   scoresContainer: { flex: 1 },
   playerName: {
+    borderColor: 'black',
+    borderWidth: 0.5,
+    borderStyle: 'solid',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -31,13 +34,15 @@ const styles = StyleSheet.create({
   },
   oneRow: { flex: 1, flexDirection: 'row' },
   clicker: {
-    paddingLeft: 8,
+    borderColor: 'grey',
+    borderWidth: 0.5,
+    borderStyle: 'solid',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
-  clickerText: { flex: 1, fontSize: 24 },
+  clickerText: { flex: 1, fontSize: 24, paddingLeft: 30 },
 });
 const Card = ({ text }) => (
   <View style={styles.card}>

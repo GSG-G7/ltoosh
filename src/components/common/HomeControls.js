@@ -8,7 +8,12 @@ const AddPLayerInput = ({ style = {}, addPlayer }) => {
   return (
     <View style={{ ...style, flexDirection: 'row' }}>
       <View style={{ flex: 2 }}>
-        <TextInput style={{ borderColor: 'black' }} value={name} onChangeText={setName} />
+        <TextInput
+          style={{ borderColor: 'black' }}
+          value={name}
+          onChangeText={setName}
+          placeholder="New player name"
+        />
       </View>
       <View style={{ flex: 1 }}>
         <Button

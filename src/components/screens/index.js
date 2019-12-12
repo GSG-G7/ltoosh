@@ -1,4 +1,2 @@
-import HistoryScreen from './HistoryScreen';
-import HomeScreen from './HomeScreen';
-
-export {HistoryScreen, HomeScreen};
+export { default as HistoryScreen } from './HistoryScreen';
+export { default as HomeScreen } from './HomeScreen';

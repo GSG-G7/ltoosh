@@ -6,4 +6,4 @@ export {
   CLEAR_NAMES,
   clearNamesAction,
 } from './scores';
-export { SAVE_GAME, saveGameAction } from './history';
+export { SAVE_GAME, saveGameAction, DELETE_GAME, deleteGameAction } from './history';

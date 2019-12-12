@@ -1,4 +1,4 @@
-import { SAVE_GAME } from '../actions';
+import { SAVE_GAME, DELETE_GAME } from '../actions';
 
 const INITIAL_STATE = [
   {
@@ -25,6 +25,9 @@ export default (state = INITIAL_STATE, { type, payload }) => {
     case SAVE_GAME:
       // payload looks like { oldGameState: { date: Date.now(), -players info- } }
       return [...state, { ...payload }];
+    case DELETE_GAME:
+      // payload looks like { oldGameState: { date: Date.now(), -players info- } }
+      return state.filter(e => e !== payload);
     default:
       return state;
   }

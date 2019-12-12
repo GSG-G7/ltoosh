@@ -12,16 +12,18 @@ const TabNavigator = createBottomTabNavigator(
   {
     Home: {
       screen: HomeScreen,
-      navigationOptions: { tabBarIcon: () => <Icon name="home" size={20} /> },
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <Icon name="home" size={20} color={tintColor} />,
+      },
     },
     History: {
       screen: HistoryScreen,
-      navigationOptions: {
-        tabBarIcon: () => <Icon name="history" size={20} />,
-      },
+      navigationOptions: () => ({
+        tabBarIcon: ({ tintColor }) => <Icon name="history" size={20} color={tintColor} />,
+      }),
     },
   },
-  { tabBarOptions: { showLabel: false } }
+  { tabBarOptions: { showLabel: false, activeTintColor: '#2f86e8' } }
 );
 
 const Navigator = createAppContainer(TabNavigator);

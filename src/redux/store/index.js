@@ -6,15 +6,11 @@ import { persistStore, persistReducer } from 'redux-persist';
 
 import rootReducer from '../reducers';
 
-AsyncStorage.getItem('root').then(console.log);
+// AsyncStorage.getItem('root').then(console.log);
 const persistConfig = {
-  key: 'root',
-  // Storage Method (React Native)
+  key: 'primary',
+  keyPrefix: '', // the redux-persist default `persist:` doesn't work with some file systems
   storage: AsyncStorage,
-  // Whitelist (Save Specific Reducers)
-  whitelist: [],
-  // Blacklist (Don't Save Specific Reducers)
-  blacklist: [],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

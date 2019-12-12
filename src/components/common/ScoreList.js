@@ -119,8 +119,9 @@ const ScoreList = ({
   gameState: { date, gameType, ...gameState },
   updatePlayerScore,
 }) => {
-  const playerNames = Object.keys(gameState);
+  const playerNames = Object.keys(gameState); // .sort();
   const scores = Object.values(gameState);
+  // playerNames.map(key => gameState[key]);
   return (
     <View style={{ ...styles.container, ...style }}>
       <ScoreListHeader playerNames={playerNames} />

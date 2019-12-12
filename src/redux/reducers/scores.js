@@ -22,13 +22,14 @@ export default (state = INITIAL_STATE, { type, payload }) => {
       const [[key, value]] = Object.entries(payload);
       const oldValues = state[key];
       const newValue = oldValues[oldValues.length - 1] + +value;
-      // const newState = { ...state };
-      // newState[key] = [...oldValues, newValue];
-      // return newState;
-      return {
-        ...state,
-        [key]: [...oldValues, newValue],
-      };
+      const newState = { ...state };
+      newState[key] = [...oldValues, newValue];
+      return newState;
+
+      // return { // buggy code in bundle mode only, debug works fine, can be operated with sort in ScoreList.js:122
+      //   ...state,
+      //   [key]: [...oldValues, newValue],
+      // };
     }
     case SAVE_GAME: {
       return Object.keys(state).reduce((acc, key) => ({ ...acc, [key]: [0] }), {});
